@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Re-Exam Request</title>
+</head>
+<body>
+    <h1>Submit Re-Exam Request</h1>
+    <form id="reExamForm">
+        <label for="studentName">Student Name:</label>
+        <input type="text" id="studentName" name="studentName" required><br><br>
+
+        <label for="courseCode">Course Code:</label>
+        <input type="text" id="courseCode" name="courseCode" required><br><br>
+
+        <label for="reason">Reason:</label>
+        <textarea id="reason" name="reason" required></textarea><br><br>
+
+        <button type="submit">Submit Request</button>
+    </form>
+
+    <p id="response"></p>
+
+    <script>
+        document.getElementById('reExamForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const data = {
+                studentName: document.getElementById('studentName').value,
+                courseCode: document.getElementById('courseCode').value,
+                reason: document.getElementById('reason').value
+            };
+
+            fetch('http://localhost:8080/api/students/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.text())
+            .then(result => {
+                document.getElementById('response').textContent = result;
+            })
+            .catch(error => {
+                document.getElementById('response').textContent = 'Error: ' + error;
+            });
+        });
+    </script>
+</body>
+</html>
